@@ -18,18 +18,21 @@ movies_reduced <-
 # dataset
 tmp <-
 movies %>%
-		filter(startYear >= 1983, titleType %in% c('movie', 'short', 'tvMovie', 'tvSeries')) %>%
+		filter(startYear >= 2003, titleType %in% c('movie', 'tvSeries')) %>%
 	inner_join(ratings)
 
+movies %>%
+		filter(titleType %in% c('movie', 'tvSeries')) %>%
+	nrow()
 tmp %>%
 	summarise(
-		n = n(), avg = mean(numVotes), rel = sum(numVotes >= 100000))
+		n = n(), avg = mean(numVotes), rel = sum(numVotes >= 50000))
 
 dataset <-
 	movies %>%
-		filter(startYear >= 1983, titleType %in% c('movie', 'short', 'tvMovie', 'tvSeries')) %>%
+		filter(startYear >= 2003, titleType %in% c('movie', 'tvSeries')) %>%
 		inner_join(ratings) %>%
-		filter(numVotes >= 10000) %>%
+		filter(numVotes >= 50000) %>%
 		inner_join(principals) %>%
 		inner_join(actors)
 dataset
@@ -48,3 +51,6 @@ dataset %>%
 	select(primaryTitle, titleType, primaryName, category, numVotes, averageRating) %>%
 	arrange(-averageRating)
 	filter(primaryTitle == 'Barbie')
+
+dataset %>%
+	filter(primaryName == 'Marco Giallini')
